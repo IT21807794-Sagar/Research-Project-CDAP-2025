@@ -8,4 +8,7 @@
 # Co Supervisor Name : Karthiga Rajendran
 
 # Team Member Details:
-IT21807794-Nithiyasagar S __ IT212377836-Imana MRF IT21831690-Roshni RJ IT21808920-Liseyanth M
+IT21807794-Nithiyasagar S 
+IT212377836Imana MRF 
+IT21831690-Roshni RJ 
+IT21808920-Liseyanth M
