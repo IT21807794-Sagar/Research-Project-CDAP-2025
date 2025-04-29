@@ -2,8 +2,8 @@
 
 # Main Research Domain:Software System Technologies (SST)
 # Sub Research Domain: Elearning and Education[ELE]
-# Project ID:2025-69
-# Preschoolers' Adaptive Educational E-learning Platform
+# Project ID:R25-069
+# AI Powered Adaptive Educational E-learning Platform for Primary Schoolers 
 
 ## Project Overview
 The goal of this research project is to create an advanced, adaptive e-learning platform especially for primary schoolers that improves early literacy abilities through social interaction and individualized learning experiences. Our platform tackles the problem of individual learning variations among preschoolers by utilizing artificial intelligence, machine learning, and collaborative learning concepts. It does this by offering customized instructional content that instantly adjusts to each child's distinct learning profile.
@@ -34,7 +34,7 @@ Create revision suggestions that are gradually adaptive and change as the youngs
 
 ## 4. Collaboration and Grouping of Students (ROSHNI ROSALINE [IT21831690])
 Create a system that pairs kids according to common interests or ability levels.
-Use interactive, group-based exercises and communication tools to improve social skills and motivation.
+Use interactive, communication tools to improve social skills and motivation.
 
 ## System Architecture 
 So in this system we initially planned of building the stateless architecture which the system neither stores personal details nor data 
