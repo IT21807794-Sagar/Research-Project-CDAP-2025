@@ -53,7 +53,7 @@ So in this system we initially planned of building the stateless architecture wh
 -Co-Supervisor: Ms. Karthiga Rajendran
 
 # Team Member Details:
-IT21807794-Nithiyasagar S {Emotional Awareness Integrated chatbot}
+IT21807794-Nithiyasagar S [Leader] {Emotional Awareness Integrated chatbot}   
 IT21808920-Liseyanth M {Real-Time Content Adaptation Engine}
 IT212377836Imana MRF {Personalized Revision Recommendation}
 IT21831690-Roshni RJ {Grouping and Collaboration}
