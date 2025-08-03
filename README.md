@@ -28,7 +28,7 @@ Include a helpful chatbot that responds sympathetically to the child's emotional
 Create and put into use a real-time adaptive engine that uses performance metrics to customize game content.
 Maintain engagement while preventing frustration by making sure that dynamic difficulty balancing is maintained.
 
-## 3. Customized Modification Suggestions (IMANA RIZVEE [IT21237836])
+## 3. Personlaized Revsion Recommendation(IMANA RIZVEE [IT21237836])
 Make a data-driven revising tool that pinpoints places where literacy skills are lacking.
 Create revision suggestions that are gradually adaptive and change as the youngster gets better.
 
