@@ -8,6 +8,9 @@
 ## Project Overview
 The goal of this research project is to create an advanced, adaptive e-learning platform especially for primary schoolers that improves early literacy abilities through social interaction and individualized learning experiences. Our platform tackles the problem of individual learning variations among preschoolers by utilizing artificial intelligence, machine learning, and collaborative learning concepts. It does this by offering customized instructional content that instantly adjusts to each child's distinct learning profile.
 
+## REPO Link :
+https://github.com/IT21807794-Sagar/Research-Project-CDAP-2025.git
+
 ## Statement of the Problem
 Individual differences in learning styles, interests, and rates of growth are frequently not accommodated in traditional elementary education. The outcome of this one-size-fits-all strategy is:
 
