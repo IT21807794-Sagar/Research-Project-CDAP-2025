@@ -1,0 +1,529 @@
+{
+  "intents": [
+    {
+      "tag": "Intro",
+      "patterns": ["hi", "hello", "hey", "what's up?", "greetings", "good morning", "good afternoon", "good evening"],
+      "responses": [
+        "Hello! It sounds like you might be feeling some stress. How can I help?",
+        "Greetings! Hope you're doing well. How can I support you today?",
+        "Hi there! I'm here to help with anxiety and study stress. What's on your mind?",
+        "Welcome! I'm your support assistant. What would you like help with today?",
+        "Hello! Tell me what you're experiencing right now and we will take it step by step."
+      ]
+    },
+    {
+      "tag": "welcome",
+      "patterns": ["Hello!", "Hi!", "Good morning!", "Hey there!"],
+      "responses": [
+        "Hi there! Ready for your study session? You have got this, one step at a time.",
+        "Hello! How are you feeling about your work today?",
+        "Welcome! I'm here to help you navigate stress and learning challenges.",
+        "Hey! Let's set a calm pace and tackle things together."
+      ]
+    },
+    {
+      "tag": "positive_mood",
+      "patterns": [
+        "I'm feeling good",
+        "im feeling good",
+        "I feel great",
+        "I'm happy",
+        "I'm fine",
+        "I'm okay",
+        "I am relaxed",
+        "feeling positive",
+        "doing well"
+      ],
+      "responses": [
+        "That's wonderful! Enjoy the calm moments and keep this energy going.",
+        "Glad to hear you are doing well. If anything comes up, I am here.",
+        "Awesome! Keep taking small steps that support your well-being."
+      ]
+    },
+    {
+      "tag": "Academic_Stress",
+      "patterns": [
+        "I'm stressed about exams",
+        "im stressed about exams",
+        "I have exams",
+        "I have an exam tomorrow",
+        "Exams are tomorrow",
+        "Worried about tests",
+        "Big exam coming up",
+        "Too much homework",
+        "I can't focus on studies",
+        "I'm overwhelmed with assignments",
+        "How to handle exam pressure?",
+        "I'm scared of failing",
+        "I feel burnt out from studying",
+        "How to balance studies and relaxation?"
+      ],
+      "responses": [
+        "Try 25-minute focus blocks with 5-minute breaks. Short, consistent cycles reduce burnout.",
+        "Prioritize using an Eisenhower Matrix: do urgent and important first, then schedule the rest.",
+        "Make a simple weekly plan with protected rest. Breaks are part of effective learning, not wasted time.",
+        "Tackle the hardest task first to build momentum and lower anxiety.",
+        "If possible, lighten your load or ask for deadline flexibility. Capacity matters as much as effort."
+      ]
+    },
+    {
+      "tag": "Time_Management",
+      "patterns": ["I don't have enough time", "How to manage time better?", "I'm always rushing", "Too many deadlines", "How to prioritize tasks?", "I feel disorganized", "How to stop procrastinating?"],
+      "responses": [
+        "Use time blocking: reserve slots for subjects and honor them like appointments.",
+        "Set SMART goals and split big tasks into tiny, checkable steps.",
+        "Mute notifications during work blocks. Website blockers help reduce context switching.",
+        "Plan tomorrow the night before: three key tasks max.",
+        "Track one week with a timer app to find time leaks and adjust."
+      ]
+    },
+    {
+      "tag": "Social_Stress",
+      "patterns": ["I feel lonely", "Peer pressure is stressful", "I struggle to make friends", "Social anxiety is overwhelming", "How to deal with group projects?", "I fear public speaking"],
+      "responses": [
+        "Start with low-pressure spaces like clubs or study groups to build confidence gradually.",
+        "Define roles early in group work to reduce uncertainty and friction.",
+        "Before speaking, try 4-2-6 breathing to settle nerves.",
+        "Most people are focused on themselves, not judging you. Small steps count.",
+        "Use a simple script opener like, 'Could we compare approaches for Q3?' to start study chats."
+      ]
+    },
+    {
+      "tag": "Financial_Stress",
+      "patterns": ["I have financial issues", "How to manage student loans?", "I can't afford expenses", "How to budget wisely?", "I need to work while studying"],
+      "responses": [
+        "Use a 50/30/20 or 60/30/10 budget as a starting point, then tweak to your reality.",
+        "Look for campus jobs with flexible hours and skill overlap with your studies.",
+        "Check for open educational resources and second-hand text options.",
+        "Search for smaller, rolling-deadline scholarships. Lower competition adds up.",
+        "Track spending for two weeks to reveal easy savings."
+      ]
+    },
+    {
+      "tag": "Physical_Stress",
+      "patterns": ["I have headaches", "My body aches", "I can't sleep", "Stress makes me tired", "How to relieve muscle tension?"],
+      "responses": [
+        "Try progressive muscle relaxation: tense 5 seconds, release 10 seconds, head to toe.",
+        "Hydrate, stand and stretch hourly, and check chair and desk ergonomics.",
+        "Short walks or gentle yoga help reset the nervous system.",
+        "Warm compresses on neck and shoulders can ease tension after long study sessions.",
+        "Keep screens away an hour before bed to protect sleep."
+      ]
+    },
+    {
+      "tag": "Quick_Stress_Relief",
+      "patterns": ["I need instant calm", "Quick stress relief tips", "I'm panicking right now", "I need immediate relief"],
+      "responses": [
+        "Box breathing: in 4, hold 4, out 6. Repeat 5 rounds.",
+        "5-4-3-2-1 grounding: name 5 things you see, 4 hear, 3 feel, 2 smell, 1 taste.",
+        "Splash cool water on your face to activate a calming reflex.",
+        "Butterfly hug: cross arms and alternate taps. It can quickly reduce intensity."
+      ]
+    },
+    {
+      "tag": "Long_Term_Stress_Management",
+      "patterns": ["How to reduce long-term stress?", "I need healthy habits", "Ways to prevent burnout"],
+      "responses": [
+        "Aim for movement 3 times per week. Consistency beats intensity.",
+        "Guard sleep and wake times. Routines stabilize mood and focus.",
+        "Schedule weekly joy time. Make it non-negotiable.",
+        "Practice 10 minutes of mindfulness daily. Small, steady changes add up.",
+        "Set boundaries. Say no to protect time and energy."
+      ]
+    },
+    {
+      "tag": "Positive_Affirmations",
+      "patterns": ["I need positivity", "Affirmations for stress", "How to stop negative thoughts?"],
+      "responses": [
+        "Try this: I am learning. Progress beats perfection.",
+        "Rewrite the thought: from I am bad at this to I am improving with practice.",
+        "List three small wins from today to train your brain to notice progress.",
+        "Create a personal affirmation for your current fear and repeat it before work.",
+        "Acknowledge the thought (I notice I am worrying) and gently refocus."
+      ]
+    },
+    {
+      "tag": "Professional_Help",
+      "patterns": ["When to see a therapist?", "I need counseling", "Do I need professional help?"],
+      "responses": [
+        "If stress disrupts daily life or persists despite self-help, talking to a professional can help.",
+        "CBT can reduce anxious thinking loops and build practical skills.",
+        "Many services offer telehealth or campus counseling that is accessible and confidential."
+      ]
+    },
+    {
+      "tag": "Sleep_Stress",
+      "patterns": ["Stress keeps me awake", "How to sleep better?", "I overthink at night", "Nighttime anxiety"],
+      "responses": [
+        "10-3-2-1 rule: caffeine 10h, meals 3h, work 2h, screens 1h before bed.",
+        "Try 4-7-8 breathing to fall asleep faster.",
+        "Do a brain dump: write worries, then close the notebook.",
+        "If awake more than 20 minutes, get up, do something calm, return when sleepy."
+      ]
+    },
+    {
+      "tag": "Creative_Outlets",
+      "patterns": ["Art for stress relief", "Writing to reduce anxiety", "Creative ways to relax"],
+      "responses": [
+        "Try a 10-minute free-write to clear mental clutter.",
+        "Doodle or color patterns to give your mind easy focus.",
+        "Music changes state fast. Curate a calm or energy playlist.",
+        "Simple crafts like origami or knitting can be meditative.",
+        "Zentangle patterns provide focus without pressure."
+      ]
+    },
+    {
+      "tag": "Study_Techniques",
+      "patterns": ["What are effective study techniques?", "How can I study better?", "Best ways to study for exams"],
+      "responses": [
+        "SQ3R plus active recall beats rereading. Test yourself early and often.",
+        "Use spaced repetition: 1 day, 3 days, 7 days, and so on.",
+        "Feynman Technique: explain simply. Gaps become next practice targets.",
+        "Make quick mind maps to link concepts.",
+        "Work without solutions first, then compare and correct."
+      ]
+    },
+    {
+      "tag": "Exam_Anxiety",
+      "patterns": ["I freeze during exams", "Test anxiety is ruining my grades", "I blank out during tests", "How to stay calm during tests?"],
+      "responses": [
+        "Run small timed drills to normalize the pressure.",
+        "Use the 3-3-3 grounding rule during the test if anxiety spikes.",
+        "Write known formulas first to reduce memory load.",
+        "Skip and return. Momentum builds confidence."
+      ]
+    },
+    {
+      "tag": "Concentration_Focus",
+      "patterns": ["I can't concentrate while studying", "How to improve focus?", "I get distracted easily"],
+      "responses": [
+        "Use a dedicated study space and device-free blocks.",
+        "Use website or app blockers during deep work windows.",
+        "Body doubling (co-study) boosts accountability.",
+        "Short daily meditation improves attention over time.",
+        "Focus on one sub-task per 25-minute block."
+      ]
+    },
+    {
+      "tag": "Math_Anxiety",
+      "patterns": ["I'm afraid of math", "Math makes me anxious", "I freeze when I see equations", "I have math phobia","Can you help me with my math quiz"],
+      "responses": [
+        "Desensitize: start with very easy problems and increase gradually.",
+        "Shift self-talk from I can't to I am learning, step by step.",
+        "Understand the reason behind methods. Meaning reduces fear.",
+        "Apply concepts to real life to make them less abstract.",
+        "Break complex problems into micro-steps to avoid overwhelm."
+      ]
+    },
+    {
+      "tag": "Math_Study_Strategies",
+      "patterns": ["How to study for math tests", "Best way to learn math formulas", "How to practice math problems"],
+      "responses": [
+        "Active problem-solving beats passive reading. Embrace productive struggle.",
+        "Keep an error log. Patterns of mistakes guide your practice.",
+        "Spaced practice: mix old and new topics.",
+        "Teach-back: explain aloud as if to a friend.",
+        "Ramp difficulty gradually to build confidence."
+      ]
+    },
+    {
+      "tag": "math_question_help",
+      "patterns": ["I don't understand this question", "This math question is too hard", "How do I solve this?", "I'm stuck on this problem"],
+      "responses": [
+        "Identify what is asked, list given info, pick a method, solve step by step.",
+        "Rewrite the problem in your own words to clarify.",
+        "Work backwards from the goal or compare to a similar example.",
+        "Which step feels stuck: finding the formula, setting up, or simplifying?"
+      ]
+    },
+    {
+      "tag": "feeling_stressed",
+      "patterns": ["I'm feeling stressed", "I'm so nervous", "I can't focus", "I feel overwhelmed", "im feeling so down", "i feel down", "i am sad"],
+      "responses": [
+        "Let's do three slow breaths together, then pick one tiny next step.",
+        "Try the 5-4-3-2-1 grounding to return to the present.",
+        "Naming feelings reduces their intensity: I notice I am anxious.",
+        "Your worth is not measured by a score. Your effort matters."
+      ]
+    },
+    {
+      "tag": "encouragement",
+      "patterns": ["I'm scared I won't finish", "I'm not doing well", "What if I make a mistake?", "I'm going to fail"],
+      "responses": [
+        "Mistakes are data. Each one points to the next practice target.",
+        "Focus on controllables: effort, strategy, and breath.",
+        "A little pre-test adrenaline can sharpen focus. Ride it, don't fight it.",
+        "Ask: What if I succeed? Visualize calm progress."
+      ]
+    },
+    {
+      "tag": "reassurance",
+      "patterns": ["I think I can't do this", "This is too hard for me", "I want to give up"],
+      "responses": [
+        "Effort rewires the brain. Today's challenge is tomorrow's strength.",
+        "There is no fixed math person. There is practice and support.",
+        "Remember your why. Tie today's step to your bigger goal.",
+        "Struggle equals growth. You are building capacity right now."
+      ]
+    },
+    {
+      "tag": "reminder_to_breathe",
+      "patterns": ["I need to calm down", "I'm feeling too anxious", "I need a break", "How do I calm my nerves?"],
+      "responses": [
+        "Inhale 4, hold 2, exhale 6. Repeat 3 rounds.",
+        "Trace a square with your finger: breathe in, hold, out, hold on each side.",
+        "Hand on belly, breathe diaphragmatically. Slow and steady.",
+        "Pause 30 seconds: shoulders down, jaw unclench, breathe."
+      ]
+    },
+    {
+      "tag": "celebrate_small_wins",
+      "patterns": ["I solved a problem!", "I finished a section", "I'm making progress"],
+      "responses": [
+        "Yes! Small wins compound. Notice what you did that worked.",
+        "Great job. Your effort is building durable skills.",
+        "Awesome. Name the strategy you used so you can repeat it.",
+        "Momentum comes from moments like this. Keep going!"
+      ]
+    },
+    {
+      "tag": "motivation",
+      "patterns": ["I want to give up", "I'm too tired to continue", "This is pointless", "I can't keep going"],
+      "responses": [
+        "Shrink the task. Two minutes of effort counts and often grows.",
+        "Progress over perfection. One meaningful step is enough today.",
+        "Connect the task to something you care about to make it relevant.",
+        "Tell yourself: one more small step, then reassess."
+      ]
+    },
+    {
+      "tag": "thank_you",
+      "patterns": ["thank you", "thanks", "thank you so much", "I appreciate it"],
+      "responses": [
+        "You're welcome! I'm here whenever you need support.",
+        "My pleasure! Reach out anytime.",
+        "Happy to help. Keep me posted on your progress.",
+        "Anytime! You have got this."
+      ]
+    },
+    {
+      "tag": "nervous",
+      "patterns": ["I'm nervous", "I feel nervous", "I'm anxious", "I'm worried"],
+      "responses": [
+        "Totally normal. Breathe, then choose one tiny next action.",
+        "Name it to tame it: I feel nervous and I can still proceed.",
+        "Go at your pace. Steady beats rushed.",
+        "You are more ready than you think."
+      ]
+    },
+    {
+      "tag": "quiz",
+      "patterns": ["I'm having a quiz today", "I have a test today", "I have a quiz"],
+      "responses": [
+        "You are ready. Start with a confidence question to build momentum.",
+        "Breathe, jot key formulas, then work steadily.",
+        "Skim all questions first. Plan quick wins, then deeper ones.",
+        "Trust your prep. One problem at a time."
+      ]
+    },
+    {
+      "tag": "joke",
+      "patterns": ["Tell me a joke", "I need a joke", "Can you make me laugh?"],
+      "responses": [
+        "Why was the math book sad? It had too many problems!",
+        "What do you call a number that cannot stay in one place? A roamin' numeral!",
+        "Why did the student wear glasses in math class? To improve di-vision!"
+      ]
+    },
+    {
+      "tag": "motivational_stories",
+      "patterns": ["Tell me a motivational story", "Share an inspiring story", "I need inspiration"],
+      "responses": [
+        "Katherine Johnson's precise math helped launch human spaceflight. Persistence beats barriers.",
+        "John Urschel balanced the NFL and a math PhD. Passion finds a path.",
+        "Maryam Mirzakhani explored like a creative. Math can be imaginative, not just rigid."
+      ]
+    },
+    {
+      "tag": "math_anxiety_coping",
+      "patterns": ["How do I deal with math anxiety?", "Math makes me panic", "I freeze when doing math"],
+      "responses": [
+        "Treat errors as information. Keep an error log to convert fear into feedback.",
+        "Desensitize: easy to moderate to hard. Gradual exposure builds calm competence.",
+        "Use pre-work rituals: two breaths, scan plan, first micro-step.",
+        "Before starting, write worries for 2 minutes to clear working memory."
+      ]
+    },
+    {
+      "tag": "math_career_inspiration",
+      "patterns": ["What can I do with math?", "Math career options", "Why is math important?"],
+      "responses": [
+        "Data science, climate modeling, and health analytics rely on math.",
+        "Game development uses geometry and physics. Finance uses probability and calculus.",
+        "Cryptography protects everyday privacy. Number theory in action."
+      ]
+    },
+    {
+      "tag": "procrastination_now",
+      "patterns": ["I keep putting it off", "I will start later", "I am procrastinating", "I cannot get started", "I delay my work"],
+      "responses": [
+        "Set a 2-minute timer and do the smallest possible step now.",
+        "Lower the bar: one bullet point, one example, one page skim.",
+        "Say out loud: I will start messy and improve later."
+      ]
+    },
+    {
+      "tag": "study_plan_builder",
+      "patterns": ["Make me a study plan", "How do I plan my study?", "Help me plan my revision", "Create a study schedule"],
+      "responses": [
+        "Pick 3 priorities for today, 2 medium tasks, 1 easy win. Time block 25 minutes each.",
+        "Alternate hard and light topics. End with a quick review session.",
+        "Schedule breaks and a short reflection to decide the next step."
+      ]
+    },
+    {
+      "tag": "exam_day_before",
+      "patterns": ["What should I do the day before an exam?", "Day before test tips", "How to prepare the day before"],
+      "responses": [
+        "Light review, write a formula sheet from memory, and prepare materials.",
+        "Set clothes, snacks, water, and a calm bedtime routine.",
+        "Stop heavy study 1-2 hours before bed. Wind down."
+      ]
+    },
+    {
+      "tag": "exam_morning",
+      "patterns": ["What should I do on exam morning?", "Morning of the test", "Exam day routine"],
+      "responses": [
+        "Eat a simple breakfast with protein, hydrate, and breathe slowly.",
+        "Arrive a bit early, scan the room, and write down key formulas.",
+        "Plan your order: quick wins first, then medium, then hard."
+      ]
+    },
+    {
+      "tag": "after_exam_reflection",
+      "patterns": ["After the exam I worry", "I keep thinking about my mistakes", "I think I failed"],
+      "responses": [
+        "Write 3 things you did well and 2 to improve next time.",
+        "Close the loop with a small reward, then rest.",
+        "Shift focus to the next step you can control."
+      ]
+    },
+    {
+      "tag": "teacher_communication",
+      "patterns": ["How do I talk to my teacher?", "Ask for help from teacher", "Email my teacher", "I need extensions"],
+      "responses": [
+        "Use a brief template: greeting, context, specific question, thanks.",
+        "Be honest about challenges and propose a small next step.",
+        "Ask for office hours or one example to review together."
+      ]
+    },
+    {
+      "tag": "parent_conversation",
+      "patterns": ["How do I tell my parents?", "My parents expect too much", "Talk to family about grades"],
+      "responses": [
+        "Share your study plan and where you need support, not pressure.",
+        "Explain what helps you focus and what adds stress.",
+        "Ask for a regular quick check-in to align expectations."
+      ]
+    },
+    {
+      "tag": "group_study_rules",
+      "patterns": ["How to make group study work?", "Group study problems", "Study group rules"],
+      "responses": [
+        "Agree roles, a goal for the session, and a time box.",
+        "Use a shared doc and keep tasks visible.",
+        "End with action items and the next date."
+      ]
+    },
+    {
+      "tag": "focus_environment",
+      "patterns": ["I get distracted by my phone", "My room is too noisy", "I cannot focus at home"],
+      "responses": [
+        "Create a clean desk zone with only what you need.",
+        "Use noise block: earplugs, white noise, or instrumental music.",
+        "Put your phone in another room or use app blockers."
+      ]
+    },
+    {
+      "tag": "digital_detox",
+      "patterns": ["I doomscroll", "I keep checking social media", "Screens make me anxious"],
+      "responses": [
+        "Set a 15-minute no-screen block and start your task.",
+        "Move distracting apps off the first screen or log out.",
+        "Replace scrolling with a quick walk or stretch."
+      ]
+    },
+    {
+      "tag": "rumination_stop",
+      "patterns": ["I cannot stop thinking about it", "My mind keeps looping", "I overthink everything"],
+      "responses": [
+        "Name the loop, then schedule worry time later.",
+        "Switch tasks physically: stand up, get water, change rooms.",
+        "Ask: what is one action I can do in 2 minutes?"
+      ]
+    },
+    {
+      "tag": "catastrophizing",
+      "patterns": ["I think the worst will happen", "Everything will go wrong", "What if I fail badly"],
+      "responses": [
+        "Write the worst, best, and most likely outcomes.",
+        "Ask: what would I tell a friend in my situation?",
+        "Plan a small safety net step to reduce risk."
+      ]
+    },
+    {
+      "tag": "self_compassion",
+      "patterns": ["I am too hard on myself", "I hate myself for failing", "I am not good enough"],
+      "responses": [
+        "Talk to yourself like a kind coach: specific, supportive, actionable.",
+        "Your value is not your grades. You are learning.",
+        "One setback does not define your path. Adjust and continue."
+      ]
+    },
+    {
+      "tag": "nutrition_study",
+      "patterns": ["What should I eat to study?", "Food for focus", "Snacks for exams"],
+      "responses": [
+        "Choose balanced snacks: nuts, yogurt, fruit, whole grains.",
+        "Avoid heavy sugar right before study blocks.",
+        "Hydrate regularly; mild dehydration reduces focus."
+      ]
+    },
+    {
+      "tag": "hydration_breaks",
+      "patterns": ["I forget to drink water", "Hydration tips", "I get tired while studying"],
+      "responses": [
+        "Keep a bottle on your desk and sip each break.",
+        "Pair water with every start of a 25-minute block.",
+        "Set a simple reminder each hour."
+      ]
+    },
+    {
+      "tag": "posture_ergonomics",
+      "patterns": ["My back hurts when I study", "Neck pain from studying", "Good posture for studying"],
+      "responses": [
+        "Feet flat, screen at eye level, elbows near 90 degrees.",
+        "Stand and stretch every 30 to 45 minutes.",
+        "Use a small cushion at your lower back for support."
+      ]
+    },
+    {
+      "tag": "eye_strain_relief",
+      "patterns": ["My eyes hurt", "Screen strain", "Blurred vision while studying"],
+      "responses": [
+        "Follow 20-20-20: every 20 minutes, look 20 feet away for 20 seconds.",
+        "Increase text size and reduce screen glare.",
+        "Use warm light in the evening and keep screens farther away."
+      ]
+    },
+    {
+      "tag": "acknowledgment",
+      "patterns": ["haha", "lol", "that's funny", "ok", "okay", "I see", "got it", "understood", "nice", "great"],
+      "responses": [
+        "Glad that helped! Want to dive deeper into anything?",
+        "Awesome. What should we tackle next?",
+        "Got it! I'm here if you want to keep going."
+      ]
+    }
+  ]
+}
