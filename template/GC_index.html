@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+  <div class="content-header">
+            <h1>Student Grouping and Collaboration</h1>
+             <div class="user-profile">
+                <div class="user-avatar">EL</div>
+                <span>E Learn  </span>
+            </div>
+        </div>
+		
+<div class="dashboard-cards">
+    
+    <div class="card">
+        <i class="fas fa-users"></i>
+        <h3>Grouping and Collaboration    </h3>
+        <p>Here how it works</p>
+    </div>
+     
+</div>
+
+
+
+<div class="welcome-screen">
+    <div class="welcome-content bounce-in">
+        <h1>📊 Student <span class="highlight">Grouping and Collaboration</span></h1>
+        <p>Upload a CSV file of new students to classify them into learning clusters.</p>
+        <br/><br/>
+
+        <form method="post" enctype="multipart/form-data" class="upload-form fade-in">
+            <div class="upload-column">
+                <input type="file" id="csv" name="csv" accept=".csv" required class="upload-input">
+                <label for="csv" class="upload-label">
+                    <i class="fas fa-upload"></i> Choose CSV File
+                </label>
+                <span class="upload-filename" id="file-name">No file selected</span>
+                <button type="submit" class="cta-button submit-upload">Upload & Predict Clusters</button>
+            </div>
+        </form>
+
+        {% if results %}
+            <h2 class="subject-title">Prediction Results</h2>
+            <div class="table-container">
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Age</th>
+                            <th>Learning Style</th>
+                            <th>Preferred Activity</th>
+                            <th>Cluster</th>
+                            <th>Level</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in results %}
+                            <tr>
+                                <td>{{ row.id }}</td>
+                                <td>{{ row.age }}</td>
+                                <td>{{ row.learning_style }}</td>
+                                <td>{{ row.preferred_activity }}</td>
+                                <td>{{ row.cluster }}</td>
+                                <td>{{ row.level }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="action-buttons-center">
+                <a href="{{ url_for('download_file', filename=filename) }}" class="cta-button">
+                    <i class="fas fa-download"></i> Download CSV
+                </a>
+                <a href="{{ url_for('group_chat') }}" class="cta-button secondary">
+                    <i class="fas fa-comments"></i> Go to Group Chats
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+ 
+
+<script>
+    const fileInput = document.getElementById('csv');
+    const fileName = document.getElementById('file-name');
+    fileInput.addEventListener('change', () => {
+        fileName.textContent = fileInput.files.length > 0 ? fileInput.files[0].name : "No file selected";
+    });
+</script>
+{% endblock %}
