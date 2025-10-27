@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="selection-screen">
+    <div class="selection-content">
+        <h2>Select Your Grade Level</h2>
+        <p class="instruction">Choose one grade level that matches your current level</p>
+        
+        <form id="gradeForm">
+            <div class="grade-options">
+                {% for grade in grades %}
+                <div class="grade-option">
+                    <input type="radio" id="grade{{ grade }}" name="grade" value="{{ grade }}" required>
+                    <label for="grade{{ grade }}">
+                        <div class="grade-card">
+                            <div class="grade-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <span class="grade-number">Grade {{ grade }}</span>
+                            <div class="grade-topics">
+                                {% for topic in GRADE_TOPICS[grade][:3] %}
+                                <span class="topic-tag">{{ topic }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <button type="submit" class="next-button">Continue to Topics <i class="fas fa-arrow-right"></i></button>
+        </form>
+    </div>
+</div>
+
+ 
+
+<script>
+document.getElementById('gradeForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+
+    fetch('/CA_topics', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.text();
+        }
+        throw new Error('Network response was not ok');
+    })
+    .then(html => {
+        document.open();
+        document.write(html);
+        document.close();
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+    });
+});
+</script>
+{% endblock %}
