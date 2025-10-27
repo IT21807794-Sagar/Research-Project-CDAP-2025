@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E Learn  </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Emotional_Awareness_style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+	     <link rel="stylesheet" href="{{ url_for('static', filename='css/GC_style.css') }}">
+		      <link rel="stylesheet" href="{{ url_for('static', filename='css/PR_style.css') }}">
+ 		      <link rel="stylesheet" href="{{ url_for('static', filename='css/CA_style.css') }}">
+    <style>
+    .disabled-link {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+</style>
+</head>
+
+
+<body>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <button class="toggle-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h2>E Learn  </h2>
+        </div>
+
+
+
+
+<div class="nav-links">
+
+
+
+    <a href="{{ url_for('Emotional_Awareness_index') }}"
+       class="nav-link {% if request.endpoint == 'Emotional_Awareness_index' %}active{% endif %}">
+        <i class="fas fa-brain"></i>
+        <span>Emotional Awareness</span>
+    </a>
+
+
+
+
+
+    <a href="{{ url_for('CA') }}"
+       class="nav-link {% if request.endpoint == 'CA' %}active{% endif %}">
+        <i class="fas fa-lightbulb"></i>
+        <span>Adaptive Learning
+</span>
+    </a>
+
+
+<a href="{% if session.get('ca_done') %}{{ url_for('PR_index') }}{% else %}#{% endif %}"
+   class="nav-link {% if request.endpoint == 'PR_index' %}active{% endif %} {% if not session.get('ca_done') %}disabled-link{% endif %}">
+    <i class="fas fa-book-open"></i>
+    <span>Personalized Revision</span>
+</a>
+
+
+
+
+    <a href="{{ url_for('GC_index') }}"
+       class="nav-link {% if request.endpoint == 'GC_index' %}active{% endif %}">
+        <i class="fas fa-users"></i>
+        <span>Grouping and Collaboration</span>
+    </a>
+
+
+
+ <a href="{{ url_for('home') }}"
+   class="nav-link {% if request.endpoint == 'home' %}active{% endif %}">
+    <i class="fas fa-info-circle"></i>
+    <span>About</span>
+</a>
+
+
+
+<div class="video-card fade-in" style="display: none;">
+    <div class="video-wrapper">
+        <img src="{{ url_for('video') }}" alt="Stress Detection Feed">
+    </div>
+    <div id="stress-level" class="stress-level {{ stress_level }}" data-level="{{ stress_level }}">
+        Stress Level: {{ stress_level }}
+    </div>
+</div>
+
+
+
+</div>
+
+
+
+
+    </div>
+
+    <div class="main-content">
+
+
+
+
+        <div class="main-content-block">
+            {% block content %}{% endblock %}
+        </div>
+
+
+        <footer class="footer">
+            <p>Emotional Awareness Assistant &copy; 2025  </p>
+        </footer>
+    </div>
+
+
+
+
+    <div id="chatbot-container">
+        <div id="chatbot-toggle">💬</div>
+        <div id="chatbot-popup">
+            <div class="chat-header">
+                <span>Stress Assistant</span>
+                <div class="chat-controls">
+                    <button id="expand-btn" title="Expand chat">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    <button id="chatbot-close" title="Close chat">&times;</button>
+                </div>
+            </div>
+            <div id="chat-box" class="chat-body">
+                <div class="bot-msg">Hello! I'm your stress assistant. How can I help you today?</div>
+            </div>
+            <div class="chat-footer">
+                <input type="text" id="user-message" placeholder="Type a message...">
+                <button id="voice-btn" title="Voice input">🎤</button>
+                <button id="send-btn" title="Send message">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/Emotional_Awareness_script.js') }}"></script>
+</body>
+</html>
