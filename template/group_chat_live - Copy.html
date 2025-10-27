@@ -12,8 +12,8 @@
 <div class="welcome-screen">
     <div class="welcome-content bounce-in">
         <div class="page-header">
-            <h1>💬 Student Group Chats</h1>
-            <p class="subtitle">Collaborate with your group members in real-time based on learning clusters</p>
+            <h1>💬 Group Chats</h1>
+            <p class="subtitle">Collaborate with your group members in real-time based on learning clusters” → “Collaborate with peers in real time, grouped by learning style.</p>
         </div>
 
         <div class="groups-overview">
@@ -28,8 +28,8 @@
 
         <div class="table-container">
             <div class="table-header">
-                <h3>Student Groups Overview</h3>
-                <p>Click "Start Chat" to begin collaboration with any group</p>
+                <h3>Groups Overview</h3>
+                <p>Pick a ready group to start chatting.</p>
             </div>
             <table class="results-table">
                 <thead>
@@ -38,7 +38,6 @@
                         <th>Age</th>
                         <th>Learning Style</th>
                         <th>Preferred Activity</th>
-                        <th>Cluster</th>
                         <th>Group Action</th>
                     </tr>
                 </thead>
@@ -56,17 +55,13 @@
                                     </span>
                                 </td>
                                 <td>{{ student.preferred_activity }}</td>
-                                <td>
-                                    <span class="cluster-badge cluster-{{ student.cluster }}">
-                                        Cluster {{ student.cluster }}
-                                    </span>
-                                </td>
+
                                 {% if loop.first %}
                                     <td rowspan="{{ group_size }}" class="group-action-cell">
                                         {% if group_size == 3 %}
                                             <button onclick="promptUsername({{ group_id }})" class="chat-start-button">
                                                 <i class="fas fa-comments"></i>
-                                                <span>Start Group Chat</span>
+                                                <span>Open Group Chat</span>
                                             </button>
                                             <div class="group-info">
                                                 <small>  {{ group_size }}/3 members</small>
@@ -74,7 +69,7 @@
                                         {% else %}
                                             <button class="chat-waiting-button" disabled>
                                                 <i class="fas fa-clock"></i>
-                                                <span>Waiting for Members</span>
+                                                <span>Waiting for teammates</span>
                                             </button>
                                             <div class="group-info">
                                                 <small>  {{ group_size }}/3 members</small>
@@ -109,11 +104,11 @@
                     <div id="welcomeMessage" class="welcome-chat-message">
                         <div class="welcome-icon">👋</div>
                         <h3>Welcome to Your Group Chat!</h3>
-                        <p>This is your space for collaboration and discussion. Start by introducing yourself to the group!</p>
+                        <p>This space is for your group. Kick things off with a quick intro!</p>
                         <div class="chat-tips">
                             <div class="tip">
                                 <i class="fas fa-lightbulb"></i>
-                                <span>Share ideas and ask questions</span>
+                                <span>wrap ideas and ask away</span>
                             </div>
                             <div class="tip">
                                 <i class="fas fa-handshake"></i>
@@ -121,7 +116,7 @@
                             </div>
                             <div class="tip">
                                 <i class="fas fa-clock"></i>
-                                <span>Messages are saved for 50 conversations</span>
+                                <span>We keep the last 50 messages for you</span>
                             </div>
                         </div>
                     </div>
