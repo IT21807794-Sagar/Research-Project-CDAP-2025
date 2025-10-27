@@ -1,0 +1,340 @@
+{% extends "base.html" %}
+{% block content %}
+
+  <div class="content-header">
+            <h1>Student Grouping and Collaboration</h1>
+            <div class="user-profile">
+                <div class="user-avatar">AD</div>
+                <span>Admin</span>
+            </div>
+        </div>
+
+<div class="welcome-screen">
+    <div class="welcome-content bounce-in">
+        <div class="page-header">
+            <h1>💬 Student Group Chats</h1>
+            <p class="subtitle">Collaborate with your group members in real-time based on learning clusters</p>
+        </div>
+
+        <div class="groups-overview">
+            <div class="groups-stats">
+                <div class="stat-item">
+                    <div class="stat-number">{{ chats|length }}</div>
+                    <div class="stat-label">Total Groups</div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="table-header">
+                <h3>Student Groups Overview</h3>
+                <p>Click "Start Chat" to begin collaboration with any group</p>
+            </div>
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Age</th>
+                        <th>Learning Style</th>
+                        <th>Preferred Activity</th>
+                        <th>Cluster</th>
+                        <th>Group Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for group in chats %}
+                        {% set group_id = loop.index0 %}
+                        {% set group_size = group|length %}
+                        {% for student in group %}
+                            <tr>
+                                <td class="student-id">{{ student.id }}</td>
+                                <td>{{ student.age }}</td>
+                                <td>
+                                    <span class="learning-style {{ student.learning_style|lower|replace(' ', '-') }}">
+                                        {{ student.learning_style }}
+                                    </span>
+                                </td>
+                                <td>{{ student.preferred_activity }}</td>
+                                <td>
+                                    <span class="cluster-badge cluster-{{ student.cluster }}">
+                                        Cluster {{ student.cluster }}
+                                    </span>
+                                </td>
+                                {% if loop.first %}
+                                    <td rowspan="{{ group_size }}" class="group-action-cell">
+                                        {% if group_size == 3 %}
+                                            <button onclick="promptUsername({{ group_id }})" class="chat-start-button">
+                                                <i class="fas fa-comments"></i>
+                                                <span>Start Group Chat</span>
+                                            </button>
+                                            <div class="group-info">
+                                                <small>  {{ group_size }}/3 members</small>
+                                            </div>
+                                        {% else %}
+                                            <button class="chat-waiting-button" disabled>
+                                                <i class="fas fa-clock"></i>
+                                                <span>Waiting for Members</span>
+                                            </button>
+                                            <div class="group-info">
+                                                <small>  {{ group_size }}/3 members</small>
+                                            </div>
+                                        {% endif %}
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                        {% if not loop.last %}
+                            <tr class="group-separator">
+                                <td colspan="6"></td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+        <div id="chatModal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <div class="chat-header">
+                    <div class="header-content">
+                        <h2><i class="fas fa-users"></i> Group Chat <span id="groupNumber"></span></h2>
+                        <p class="online-status">🟢  </span>   online <span id="memberCount" Style="display:none"></p>
+                    </div>
+                    <span class="close" onclick="closeChat()">&times;</span>
+                </div>
+
+                <div class="chat-container">
+                    <div id="welcomeMessage" class="welcome-chat-message">
+                        <div class="welcome-icon">👋</div>
+                        <h3>Welcome to Your Group Chat!</h3>
+                        <p>This is your space for collaboration and discussion. Start by introducing yourself to the group!</p>
+                        <div class="chat-tips">
+                            <div class="tip">
+                                <i class="fas fa-lightbulb"></i>
+                                <span>Share ideas and ask questions</span>
+                            </div>
+                            <div class="tip">
+                                <i class="fas fa-handshake"></i>
+                                <span>Collaborate on learning activities</span>
+                            </div>
+                            <div class="tip">
+                                <i class="fas fa-clock"></i>
+                                <span>Messages are saved for 50 conversations</span>
+                            </div>
+                        </div>
+                    </div>
+                    <ul id="messages" class="messages-list"></ul>
+                </div>
+
+                <div class="chat-input-container">
+                    <input type="text" id="msg-input" placeholder="Type your message here..." class="chat-input">
+                    <button onclick="sendMessage()" class="send-button">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.chat-waiting-button {
+    background: #95a5a6;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: not-allowed;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.7;
+}
+
+.chat-waiting-button:hover {
+    background: #95a5a6;
+    transform: none;
+}
+
+.group-info small {
+    color: #7f8c8d;
+    font-style: italic;
+}
+</style>
+
+<script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+<script>
+    const socket = io();
+    let currentRoom = null;
+    let currentUsername = null;
+    let currentGroupId = null;
+    let onlineMembers = new Set();
+
+    function promptUsername(groupId) {
+        const username = prompt("Enter your username to join the group chat:");
+        if(username && username.trim() !== "") {
+            openChat(groupId, username.trim());
+        } else if (username !== null) {
+            alert("Username cannot be empty!");
+        }
+    }
+
+    function openChat(groupId, username) {
+        document.getElementById("messages").innerHTML = "";
+        document.getElementById("welcomeMessage").style.display = "block";
+
+        currentGroupId = groupId;
+        currentRoom = "group" + groupId;
+        currentUsername = username;
+        onlineMembers.clear();
+
+        document.getElementById("groupNumber").textContent = "#" + (groupId + 1);
+        document.getElementById("memberCount").textContent = "1";
+        document.getElementById("chatModal").style.display = "flex";
+
+        socket.emit('join', {username: currentUsername, room: currentRoom});
+        loadHistory(currentRoom);
+
+        // Add user to online members
+        onlineMembers.add(currentUsername);
+        updateMemberCount();
+    }
+
+    function closeChat() {
+        document.getElementById("chatModal").style.display = "none";
+        if(currentRoom && currentUsername){
+            socket.emit('leave', {username: currentUsername, room: currentRoom});
+            onlineMembers.delete(currentUsername);
+            currentRoom = null;
+            currentUsername = null;
+            currentGroupId = null;
+        }
+    }
+
+    function sendMessage() {
+        const input = document.getElementById("msg-input");
+        const msg = input.value.trim();
+        if(msg !== '' && currentRoom) {
+            const data = {
+                room: currentRoom,
+                username: currentUsername,
+                msg: msg,
+                timestamp: new Date().toLocaleTimeString()
+            };
+            socket.emit('text', data);
+            saveMessage(currentRoom, data);
+            input.value = '';
+            document.getElementById("welcomeMessage").style.display = "none";
+        }
+    }
+
+    document.getElementById("msg-input").addEventListener("keypress", function(e) {
+        if(e.key === "Enter") sendMessage();
+    });
+
+    function saveMessage(room, data){
+        const messages = JSON.parse(localStorage.getItem(room) || '[]');
+        messages.push(data);
+        if(messages.length > 50) messages.shift();
+        localStorage.setItem(room, JSON.stringify(messages));
+    }
+
+    function loadHistory(room) {
+        const messages = JSON.parse(localStorage.getItem(room) || '[]');
+        const ul = document.getElementById("messages");
+        ul.innerHTML = "";
+
+        if (messages.length > 0) {
+            document.getElementById("welcomeMessage").style.display = "none";
+        }
+
+        messages.forEach(data => renderMessage(data));
+    }
+
+    function renderMessage(data) {
+        const ul = document.getElementById("messages");
+        const li = document.createElement("li");
+
+        if(data.username && data.username === currentUsername){
+            li.className = "my-message";
+            li.innerHTML = `
+                <div class="message-bubble">
+                    <div class="message-content">${data.msg}</div>
+                    <div class="message-time">${data.timestamp || ''}</div>
+                </div>
+                <div class="message-avatar">${getUserIcon(data.username)}</div>
+            `;
+        } else if(data.username){
+            li.className = "other-message";
+            li.innerHTML = `
+                <div class="message-avatar">${getUserIcon(data.username)}</div>
+                <div class="message-bubble">
+                    <div class="sender">${data.username}</div>
+                    <div class="message-content">${data.msg}</div>
+                    <div class="message-time">${data.timestamp || ''}</div>
+                </div>
+            `;
+        } else {
+            li.className = "status-message";
+            li.innerHTML = `<div class="status-content">${data.msg}</div>`;
+        }
+        ul.appendChild(li);
+        ul.scrollTop = ul.scrollHeight;
+    }
+
+    function getUserIcon(username) {
+        const icons = ['👤', '🦸', '👨‍🎓', '👩‍💻', '🧑‍🏫', '👨‍🔬', '👩‍🎨', '🧑‍🚀'];
+        const index = username.length % icons.length;
+        return icons[index];
+    }
+
+    function updateMemberCount() {
+        document.getElementById("memberCount").textContent = onlineMembers.size;
+    }
+
+
+    socket.on('message', function(data){
+        if(!data.msg) return;
+        data.timestamp = new Date().toLocaleTimeString();
+        saveMessage(data.room, data);
+        document.getElementById("welcomeMessage").style.display = "none";
+        renderMessage(data);
+    });
+
+    socket.on('status', function(data){
+        if(!data.msg) return;
+        const ul = document.getElementById("messages");
+        const li = document.createElement("li");
+        li.className = "status-message";
+        li.innerHTML = `<div class="status-content">${data.msg}</div>`;
+        ul.appendChild(li);
+        ul.scrollTop = ul.scrollHeight;
+
+
+        if(data.msg.includes('joined')) {
+            onlineMembers.add(data.username);
+        } else if(data.msg.includes('left')) {
+            onlineMembers.delete(data.username);
+        }
+        updateMemberCount();
+    });
+
+
+    document.addEventListener('click', function(e) {
+        if(e.target.classList.contains('modal')) {
+            closeChat();
+        }
+    });
+
+
+    document.addEventListener('keydown', function(e) {
+        if(e.key === 'Escape' && document.getElementById('chatModal').style.display === 'flex') {
+            closeChat();
+        }
+    });
+</script>
+
+{% endblock %}
