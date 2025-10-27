@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="result-container fade-in">
+    <div class="score-card">
+        <h2>Your Score: {{ score }}%</h2>
+
+        {% if missed_topics %}
+        <div class="revision-tips">
+            <h3>Revision Tips:</h3>
+            <p>Focus on the following topics to improve:</p>
+            <ul class="missed-topics-list">
+                {% for topic in missed_topics %}
+                <li>{{ topic }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% else %}
+        <p class="perfect-score">Perfect score! 🎉 Keep it up!</p>
+        {% endif %}
+
+        <a href="{{ url_for('restart') }}" class="restart-button">
+            Restart Quiz
+        </a>
+    </div>
+</div>
+
+<style>
+    .result-container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .score-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .score-card h2 {
+        font-family: 'Fredoka One', cursive;
+        color: var(--primary-blue);
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+    }
+
+    .revision-tips {
+        margin: 30px 0;
+        text-align: left;
+    }
+
+    .revision-tips h3 {
+        color: var(--primary-blue);
+        margin-bottom: 15px;
+        font-family: 'Fredoka One', cursive;
+    }
+
+    .missed-topics-list {
+        list-style-type: disc;
+        margin-left: 20px;
+        color: #333;
+    }
+
+    .missed-topics-list li {
+        margin-bottom: 8px;
+        padding-left: 5px;
+    }
+
+    .perfect-score {
+        color: #2E7D32;
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin: 30px 0;
+    }
+
+    .restart-button {
+        background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+        color: white;
+        padding: 15px 30px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: var(--transition);
+        display: inline-block;
+    }
+
+    .restart-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4);
+    }
+</style>
+{% endblock %}

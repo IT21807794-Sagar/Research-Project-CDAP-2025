@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="question-container fade-in">
+    <div class="progress-header">
+        <div class="flex justify-between items-center mb-2">
+            <div class="question-count">
+                Question {{ question_number }} of 5
+            </div>
+            
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: {{ (question_number / 5 * 100) }}%"></div>
+        </div>
+        <div class="progress-text">
+            {{ question_number }}/5 in this set
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text">
+            <h3>Question:</h3>
+            <p>{{ question }}</p>
+        </div>
+
+        <form method="post" class="free-answer">
+            <div class="answer-section">
+                <label for="freeAnswer">Your Answer</label>
+                <textarea name="answer" id="freeAnswer" placeholder="Type your answer here..." required></textarea>
+            </div>
+
+            <button type="submit" class="submit-button">
+                <i class="fas fa-paper-plane"></i> Submit Answer
+            </button>
+        </form>
+    </div>
+</div>
+
+ 
+{% endblock %}

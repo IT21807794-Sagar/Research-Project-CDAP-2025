@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container subject-selection fade-in">
+    <h1 class="subject-title">Choose a Topic</h1>
+    <p class="subject-subtitle">Pick a subject from your PDF and select difficulty level.</p>
+    
+    <form method="post">
+        <div class="subject-grid">
+            {% for num, topic in topics.items() %}
+            <div class="subject-card">
+                <input type="radio" name="topic" value="{{ topic }}" id="topic{{ num }}" class="subject-input" required>
+                <label for="topic{{ num }}" class="subject-label">
+                    <i class="fas fa-book subject-icon"></i>
+                    <h3>{{ topic }}</h3>
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="difficulty-selector">
+            <h3>Select Difficulty</h3>
+            <div class="difficulty-options">
+                <input type="radio" id="easy" name="difficulty" value="easy">
+                <label for="easy" class="difficulty-label easy">Easy</label>
+                
+                <input type="radio" id="medium" name="difficulty" value="medium" checked>
+                <label for="medium" class="difficulty-label medium">Medium</label>
+                
+                <input type="radio" id="hard" name="difficulty" value="hard">
+                <label for="hard" class="difficulty-label hard">Hard</label>
+            </div>
+        </div>
+        
+        <button type="submit" class="start-button pulse">Start Quiz</button>
+    </form>
+</div>
+{% endblock %}
