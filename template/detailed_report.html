@@ -1,0 +1,256 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="report-screen">
+    <div class="report-content">
+        <div class="report-header">
+            <h2>Detailed Performance Report</h2>
+            <p>Comprehensive analysis of your assessment performance</p>
+        </div>
+
+        <div class="skill-summary">
+            <h3>Overall Skill Level: <span class="skill-level {{ skill_level|lower|replace(' ', '-') }}">{{ skill_level }}</span></h3>
+        </div>
+
+        <div class="performance-details">
+            <h4>Topic-wise Performance</h4>
+            <div class="performance-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Topic</th>
+                            <th>Accuracy</th>
+                            <th>Avg. Response Time</th>
+                            <th>Stress Level</th>
+                            <th>Performance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for topic, metrics in performance_metrics.items() %}
+                        <tr>
+                            <td>{{ topic }}</td>
+                            <td>{{ metrics.accuracy }}%</td>
+                            <td>{{ metrics.avg_response_time }}s</td>
+                            <td>{{ metrics.stress_level }}%</td>
+                            <td>
+                                {% if metrics.accuracy >= 80 %}
+                                <span class="performance-good">Excellent</span>
+                                {% elif metrics.accuracy >= 60 %}
+                                <span class="performance-average">Good</span>
+                                {% else %}
+                                <span class="performance-poor">Needs Improvement</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="recommendations">
+            <h4>Recommendations</h4>
+            <div class="recommendation-list">
+                {% if skill_level == "Well-Skilled" %}
+                <p>• Focus on advanced topics and challenging problems</p>
+                <p>• Consider mentoring peers who need help</p>
+                <p>• Explore real-world applications of these concepts</p>
+                {% elif skill_level == "Moderately Skilled" %}
+                <p>• Review foundational concepts in weaker areas</p>
+                <p>• Practice with medium-difficulty problems</p>
+                <p>• Work on improving response time</p>
+                {% else %}
+                <p>• Start with basic concepts and foundational knowledge</p>
+                <p>• Use learning resources with step-by-step guidance</p>
+                <p>• Practice regularly to build confidence</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="report-actions">
+            <button class="action-button secondary" onclick="window.location.href='/results'">Back to Summary</button>
+            <button class="action-button secondary" onclick="window.print()">Print Report</button>
+            <button class="action-button secondary" onclick="window.location.href='/'">Start Over</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .report-screen {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+    }
+
+    .report-content {
+        max-width: 1000px;
+        width: 100%;
+        padding: 30px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .report-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .report-header h2 {
+        color: var(--primary-blue);
+        font-family: 'Fredoka One', cursive;
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+    }
+
+    .report-header p {
+        color: #666;
+        font-size: 1.1rem;
+    }
+
+    .skill-summary {
+        text-align: center;
+        margin-bottom: 30px;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 15px;
+    }
+
+    .skill-summary h3 {
+        color: var(--primary-blue);
+        font-size: 1.5rem;
+    }
+
+    .skill-level {
+        font-weight: bold;
+        font-size: 1.6rem;
+    }
+
+    .skill-level.well-skilled {
+        color: #2E7D32;
+    }
+
+    .skill-level.moderately-skilled {
+        color: #EF6C00;
+    }
+
+    .skill-level.weakly-skilled {
+        color: #C62828;
+    }
+
+    .performance-details {
+        margin: 30px 0;
+    }
+
+    .performance-details h4 {
+        color: var(--primary-blue);
+        margin-bottom: 20px;
+        font-family: 'Fredoka One', cursive;
+        font-size: 1.5rem;
+    }
+
+    .performance-table {
+        overflow-x: auto;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .performance-table table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+    }
+
+    .performance-table th {
+        background: var(--primary-blue);
+        color: white;
+        padding: 15px;
+        text-align: left;
+        font-weight: bold;
+    }
+
+    .performance-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .performance-table tr:hover {
+        background: #f8f9fa;
+    }
+
+    .performance-good {
+        color: #28a745;
+        font-weight: bold;
+    }
+
+    .performance-average {
+        color: #ffc107;
+        font-weight: bold;
+    }
+
+    .performance-poor {
+        color: #dc3545;
+        font-weight: bold;
+    }
+
+    .recommendations {
+        margin: 30px 0;
+        padding: 25px;
+        background: #e8f4f8;
+        border-radius: 15px;
+        border-left: 4px solid var(--primary-blue);
+    }
+
+    .recommendations h4 {
+        color: var(--primary-blue);
+        margin-bottom: 15px;
+        font-family: 'Fredoka One', cursive;
+        font-size: 1.5rem;
+    }
+
+    .recommendation-list p {
+        margin: 10px 0;
+        padding-left: 20px;
+        position: relative;
+    }
+
+    .recommendation-list p:before {
+        content: "•";
+        color: var(--primary-blue);
+        font-weight: bold;
+        position: absolute;
+        left: 0;
+    }
+
+    .report-actions {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 30px;
+    }
+
+    .action-button {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 50px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: var(--transition);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .action-button.secondary {
+        background: #6c757d;
+        color: white;
+    }
+
+    .action-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+</style>
+{% endblock %}

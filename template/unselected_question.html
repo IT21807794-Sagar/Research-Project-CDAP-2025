@@ -1,0 +1,452 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="question-screen">
+    <div class="question-content">
+        <div class="question-header">
+            <div class="topic-info">
+                <h2>Exploratory Question: {{ topic }}</h2>
+                <span class="difficulty-badge medium">Medium</span>
+            </div>
+            <div class="progress-info">
+                Exploratory Check
+            </div>
+        </div>
+
+        <div class="info-note">
+            <i class="fas fa-binoculars"></i>
+            <p>This is an exploratory question on a topic you didn't select. Your performance will help us better understand your overall skills.</p>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">
+                <h3>{{ question_data.question }}</h3>
+            </div>
+
+            <div class="options-container">
+                {% for option, text in question_data.options.items() %}
+                <div class="option" data-option="{{ option }}">
+                    <span class="option-letter">{{ option }})</span>
+                    <span class="option-text">{{ text }}</span>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="stress-detector">
+                <p>How are you feeling about this question?</p>
+                <div class="stress-options">
+                    <button class="stress-btn" data-stress="false">Confident <i class="fas fa-smile"></i></button>
+                    <button class="stress-btn" data-stress="true">Unsure <i class="fas fa-meh"></i></button>
+                </div>
+            </div>
+
+            <button id="submitAnswer" class="submit-button" disabled>Submit Answer</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .question-screen {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+    }
+
+    .question-content {
+        max-width: 800px;
+        width: 100%;
+        padding: 30px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .question-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .topic-info h2 {
+        color: var(--primary-blue);
+        font-family: 'Fredoka One', cursive;
+        font-size: 1.8rem;
+    }
+
+    .difficulty-badge {
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 0.9rem;
+    }
+
+    .difficulty-badge.medium {
+        background: #FFF3E0;
+        color: #EF6C00;
+    }
+
+    .progress-info {
+        font-weight: bold;
+        color: #666;
+        background: #f0f7ff;
+        padding: 8px 15px;
+        border-radius: 20px;
+        color: var(--primary-blue);
+    }
+
+    .info-note {
+        background: #e8f4f8;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        border-left: 4px solid var(--primary-blue);
+    }
+
+    .info-note i {
+        color: var(--primary-blue);
+        font-size: 1.5rem;
+        margin-top: 2px;
+    }
+
+    .info-note p {
+        margin: 0;
+        color: #333;
+        line-height: 1.6;
+    }
+
+    .question-card {
+        margin-bottom: 20px;
+    }
+
+    .question-text h3 {
+        margin-bottom: 25px;
+        color: #333;
+        font-size: 1.3rem;
+        line-height: 1.6;
+    }
+
+    .options-container {
+        margin-bottom: 25px;
+    }
+
+    .option {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        margin-bottom: 12px;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    .option:hover {
+        border-color: var(--primary-blue);
+        background: #f0f7ff;
+    }
+
+    .option.selected {
+        border-color: var(--dark-blue);
+        background: #f0f7ff;
+    }
+
+    .option-letter {
+        font-weight: bold;
+        margin-right: 15px;
+        color: var(--primary-blue);
+        min-width: 30px;
+        font-size: 1.1rem;
+    }
+
+    .option-text {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
+    .stress-detector {
+        margin: 25px 0;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 12px;
+    }
+
+    .stress-detector p {
+        margin-bottom: 15px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .stress-options {
+        display: flex;
+        gap: 15px;
+    }
+
+    .stress-btn {
+        flex: 1;
+        padding: 12px;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        background: white;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-weight: 500;
+    }
+
+    .stress-btn.active, .stress-btn:hover {
+        border-color: var(--primary-blue);
+        background: #f0f7ff;
+        color: var(--primary-blue);
+    }
+
+    .submit-button {
+        background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: var(--transition);
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .submit-button:hover:not(:disabled) {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4);
+    }
+
+    .submit-button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+	
+	
+	/* Feedback Overlay Styles */
+.feedback-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.feedback-content {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    animation: scaleIn 0.4s ease;
+    position: relative;
+}
+
+.feedback-content h3 {
+    margin-bottom: 20px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.feedback-content .success {
+    color: #28a745;
+    font-size: 2rem;
+}
+
+.feedback-content .error {
+    color: #dc3545;
+    font-size: 2rem;
+}
+
+.feedback-content p {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #333;
+}
+
+.explanation, .common-mistakes, .correct-answer {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+    text-align: left;
+    border-left: 4px solid var(--primary-blue);
+}
+
+.explanation strong, .common-mistakes strong, .correct-answer strong {
+    color: var(--primary-blue);
+    display: block;
+    margin-bottom: 8px;
+}
+
+.response-time {
+    margin: 20px 0;
+    font-style: italic;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.next-button {
+    background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.next-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4);
+}
+
+/* Animations for modal */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+
+<script>
+let selectedOption = null;
+let stressDetected = false;
+
+document.querySelectorAll('.option').forEach(option => {
+    option.addEventListener('click', function() {
+        document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+        this.classList.add('selected');
+        selectedOption = this.dataset.option;
+        document.getElementById('submitAnswer').disabled = false;
+    });
+});
+
+document.querySelectorAll('.stress-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.stress-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        stressDetected = this.dataset.stress === 'true';
+    });
+});
+
+document.getElementById('submitAnswer').addEventListener('click', function() {
+    if (!selectedOption) return;
+
+    this.disabled = true;
+    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+    const formData = new FormData();
+    formData.append('answer', selectedOption);
+    formData.append('stress_detected', stressDetected);
+
+    fetch('/submit_unselected_answer', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        showFeedback(data);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        this.innerHTML = 'Submit Answer';
+        this.disabled = false;
+    });
+});
+
+function showFeedback(evaluation) {
+    const feedbackHTML = `
+        <div class="feedback-overlay">
+            <div class="feedback-content">
+                <h3>${evaluation.is_correct ? '<i class="fas fa-check-circle success"></i> Correct!' : '<i class="fas fa-times-circle error"></i> Incorrect'}</h3>
+                <p>${evaluation.feedback}</p>
+                ${evaluation.explanation ? `<div class="explanation"><strong>Explanation:</strong> ${evaluation.explanation}</div>` : ''}
+                ${evaluation.common_mistakes ? `<div class="common-mistakes"><strong>Common Mistakes:</strong> ${evaluation.common_mistakes}</div>` : ''}
+                ${!evaluation.is_correct ? `<div class="correct-answer"><strong>Correct Answer:</strong> ${evaluation.correct_answer}</div>` : ''}
+                <div class="response-time">Response time: ${evaluation.response_time.toFixed(1)} seconds</div>
+                <button id="nextQuestion" class="next-button">Continue <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', feedbackHTML);
+
+    document.getElementById('nextQuestion').addEventListener('click', function() {
+        document.querySelector('.feedback-overlay').remove();
+        window.location.reload();
+    });
+
+    document.querySelector('.feedback-overlay').addEventListener('click', function(e) {
+        if (e.target === this) {
+            this.remove();
+            window.location.reload();
+        }
+    });
+
+    document.addEventListener('keydown', function closeOnEscape(e) {
+        if (e.key === 'Escape') {
+            document.querySelector('.feedback-overlay').remove();
+            window.location.reload();
+            document.removeEventListener('keydown', closeOnEscape);
+        }
+    });
+}
+</script>
+{% endblock %}

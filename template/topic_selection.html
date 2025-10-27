@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="selection-screen">
+    <div class="selection-content">
+        <h2>Select Topics to Focus On</h2>
+        <p class="instruction">Choose up to 5 topics you want to work on ({{ topics|length }} available)</p>
+
+        <form id="topicForm">
+            <div class="topic-options">
+                {% for topic in topics %}
+                <div class="topic-option">
+                    <input type="checkbox" id="topic{{ loop.index }}" name="topics" value="{{ topic }}">
+                    <label for="topic{{ loop.index }}">
+                        <div class="topic-card">
+                            <div class="topic-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <span class="topic-name">{{ topic }}</span>
+                        </div>
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="selection-counter">
+                <span id="selectedCount">0</span> of 5 topics selected
+            </div>
+
+            <button type="submit" class="next-button" id="submitButton" disabled>Start Assessment <i class="fas fa-play"></i></button>
+        </form>
+    </div>
+</div>
+
+<style>
+    .selection-screen {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+    }
+
+    .selection-content {
+        max-width: 800px;
+        width: 100%;
+        padding: 30px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .selection-content h2 {
+        text-align: center;
+        margin-bottom: 15px;
+        color: var(--primary-blue);
+        font-family: 'Fredoka One', cursive;
+        font-size: 2rem;
+    }
+
+    .instruction {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #666;
+        font-size: 1.1rem;
+    }
+
+    .topic-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .topic-option input[type="checkbox"] {
+        display: none;
+    }
+
+    .topic-card {
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        border-radius: 15px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: var(--transition);
+        height: 100%;
+    }
+
+    .topic-option input[type="checkbox"]:checked + label .topic-card {
+        background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+        color: white;
+        border-color: var(--dark-blue);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(30, 60, 114, 0.3);
+    }
+
+    .topic-card:hover {
+        border-color: var(--primary-blue);
+        transform: translateY(-3px);
+    }
+
+    .topic-icon {
+        font-size: 2rem;
+        margin-bottom: 10px;
+        color: var(--primary-blue);
+    }
+
+    .topic-option input[type="checkbox"]:checked + label .topic-icon {
+        color: white;
+    }
+
+    .topic-name {
+        font-weight: bold;
+        font-size: 1rem;
+    }
+
+    .selection-counter {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: var(--primary-blue);
+        font-size: 1.1rem;
+    }
+
+    .next-button {
+        display: block;
+        width: 100%;
+        background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+        color: white;
+        border: none;
+        padding: 15px;
+        border-radius: 50px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: var(--transition);
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .next-button:hover:not(:disabled) {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4);
+    }
+
+    .next-button:disabled {
+        background: #6c757d;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const counter = document.getElementById('selectedCount');
+    const submitButton = document.getElementById('submitButton');
+    const form = document.getElementById('topicForm');
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const checkedCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            counter.textContent = checkedCount;
+
+            if (checkedCount > 5) {
+                this.checked = false;
+                counter.textContent = 5;
+                alert('You can select up to 5 topics only');
+            }
+
+            submitButton.disabled = checkedCount === 0;
+        });
+    });
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const selectedTopics = [];
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                selectedTopics.push(checkbox.value);
+            }
+        });
+
+        if (selectedTopics.length === 0) {
+            alert('Please select at least one topic');
+            return;
+        }
+
+        if (selectedTopics.length > 5) {
+            alert('You can select up to 5 topics only');
+            return;
+        }
+
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+
+        fetch('/start_questions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ topics: selectedTopics })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                window.location.href = '/question_flow';
+            } else if (data.error) {
+                alert(data.error);
+                submitButton.disabled = false;
+                submitButton.innerHTML = 'Start Assessment <i class="fas fa-play"></i>';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+            submitButton.disabled = false;
+            submitButton.innerHTML = 'Start Assessment <i class="fas fa-play"></i>';
+        });
+    });
+});
+</script>
+{% endblock %}
