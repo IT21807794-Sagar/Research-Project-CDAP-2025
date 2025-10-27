@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+   <div class="content-header">
+            <h1>Emotional Awareness</h1>
+            <div class="user-profile">
+                <div class="user-avatar">EL</div>
+                <span>E Learn  </span>
+            </div>
+        </div>
+       
+        <div class="dashboard-cards">
+            <div class="card">
+                <i class="fas fa-brain"></i>
+                <h3>Emotional Awareness  </h3>
+                <p>Explain here how it works...</p>
+            </div>   
+        </div>
+		
+
+<div class="video-card fade-in">
+    <div class="video-wrapper">
+        <img src="{{ url_for('video') }}" alt="Stress Detection Feed">
+    </div>
+    <div id="stress-level" class="stress-level {{ stress_level }}" data-level="{{ stress_level }}">
+        Stress Level: {{ stress_level }}
+    </div>
+</div>
+
+
+{% endblock %}
