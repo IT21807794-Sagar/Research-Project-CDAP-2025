@@ -192,3 +192,103 @@ def video():
 def get_stress_level():
     global stress_level
     return jsonify({"stress_level": stress_level})
+
+
+# 2---------------------------------------------------------------------------------------------------**********-------------
+
+
+#  Helper Function
+def get_level(cluster):
+    """
+    Map cluster number to Low / Medium / High level
+    Adjust based on your clusters
+    """
+    if cluster in [0, 1]:
+        return "Low Level"
+    elif cluster in [2, 3, 4]:
+        return "Medium Level"
+    else:
+        return "High Level"
+
+
+# basic Routes
+@app.route('/GC_index', methods=['GET', 'POST'])
+def GC_index():
+    results = None
+    if request.method == 'POST':
+        uploaded_file = request.files['csv']
+        if uploaded_file.filename != '':
+            df = pd.read_csv(uploaded_file)
+
+            # Predict clusters
+            df['cluster'] = pipeline.predict(df)
+
+            # Map clusters to levels
+            df['level'] = df['cluster'].apply(get_level)
+
+            if 'id' not in df.columns:
+                df.reset_index(inplace=True)
+                df.rename(columns={'index': 'id'}, inplace=True)
+
+            # Save results
+            df.to_csv(classified_students_file, index=False)
+            results = df.to_dict(orient='records')
+
+    return render_template('GC_index.html', results=results, filename=classified_students_file)
+
+
+@app.route('/group_chat')
+def group_chat():
+    df = pd.read_csv(classified_students_file)
+
+    # Map clusters
+    df['level'] = df['cluster'].apply(get_level)
+
+    if 'id' not in df.columns:
+        df.reset_index(inplace=True)
+        df.rename(columns={'index': 'id'}, inplace=True)
+
+    # Separate students
+    low_students = df[df['level'] == 'Low Level'].to_dict(orient='records')
+    medium_students = df[df['level'] == 'Medium Level'].to_dict(orient='records')
+    high_students = df[df['level'] == 'High Level'].to_dict(orient='records')
+
+    # Form mixed groups
+    num_groups = min(len(low_students), len(medium_students), len(high_students))
+    chats = []
+    for i in range(num_groups):
+        group = [low_students[i], medium_students[i], high_students[i]]
+        chats.append(group)
+
+    return render_template('group_chat_live.html', chats=chats)
+
+
+@socketio.on('join')
+def on_join(data):
+    username = data['username']
+    room = data['room']
+    join_room(room)
+    emit('status', {'msg': f"{username} has joined the chat."}, room=room)
+
+
+@socketio.on('text')
+def on_text(data):
+    room = data['room']
+    msg = data['msg']
+    username = data['username']
+    emit('message', {'msg': f"{username}: {msg}"}, room=room)
+
+
+@socketio.on('leave')
+def on_leave(data):
+    username = data['username']
+    room = data['room']
+    leave_room(room)
+    emit('status', {'msg': f"{username} has left the chat."}, room=room)
+
+
+@app.route('/download/<filename>')
+def download_file(filename):
+    return send_file(filename, as_attachment=True)
+
+
