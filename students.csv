@@ -1,0 +1,13 @@
+age,reading_level,math_level,art_interest,music_interest,sports_interest,science_interest,storytelling_interest,attention_span,social_interaction,preferred_activity,learning_style,energy_level,special_needs,friendship_groups
+7,3,2,5,3,2,4,3,12,4,creative,visual,medium,none,A
+9,4,5,2,5,4,3,4,20,3,active,auditory,high,none,none
+8,2,3,4,2,5,2,5,15,5,sports,kinesthetic,high,mild,B
+10,5,4,3,4,3,5,2,18,4,science,visual,medium,none,C
+8,2,3,4,2,5,2,5,15,5,sports,kinesthetic,high,mild,B
+9,4,5,2,5,4,3,4,20,3,active,auditory,high,none,B
+10,5,4,3,4,3,5,2,18,4,science,visual,medium,none,C
+8,2,3,4,2,5,2,5,15,5,sports,kinesthetic,high,mild,B
+10,5,4,3,4,3,5,2,18,4,science,visual,medium,none,C
+8,2,3,4,2,5,2,5,15,5,sports,kinesthetic,high,mild,B
+9,4,5,2,5,4,3,4,20,3,active,auditory,high,none,B
+9,5,5,1,5,4,3,4,20,3,sports,auditory,high,none,B
