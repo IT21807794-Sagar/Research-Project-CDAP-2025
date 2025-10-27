@@ -40,7 +40,7 @@
         </form>
 
         {% if results %}
-            <h2 class="subject-title">Prediction Results</h2>
+            <h2 class="subject-title">Student Team Formation Results</h2>
             <div class="table-container">
                 <table class="results-table">
                     <thead>
@@ -49,7 +49,6 @@
                             <th>Age</th>
                             <th>Learning Style</th>
                             <th>Preferred Activity</th>
-                            <th>Cluster</th>
                             <th>Level</th>
                         </tr>
                     </thead>
@@ -60,7 +59,6 @@
                                 <td>{{ row.age }}</td>
                                 <td>{{ row.learning_style }}</td>
                                 <td>{{ row.preferred_activity }}</td>
-                                <td>{{ row.cluster }}</td>
                                 <td>{{ row.level }}</td>
                             </tr>
                         {% endfor %}
