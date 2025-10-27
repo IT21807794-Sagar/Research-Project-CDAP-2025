@@ -1,0 +1,272 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="feedback-container fade-in">
+    <div class="feedback-header">
+        <h2><i class="fas fa-clipboard-check"></i> Result</h2>
+        <div class="question-count">
+            Question {{ question_number }} of {{ total_questions }}
+        </div>
+    </div>
+
+    <div class="question-review">
+        <div class="review-section">
+            <h3><i class="fas fa-question-circle"></i> Question</h3>
+            <p>{{ question }}</p>
+        </div>
+
+        <div class="review-section">
+            <h3><i class="fas fa-pencil-alt"></i> Your Answer</h3>
+            <p class="user-answer">{{ user_answer }}</p>
+        </div>
+
+        <div class="result-indicator {% if correct %}correct{% else %}incorrect{% endif %}">
+            {% if correct %}
+                <div class="result-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="result-text">
+                    <h3>Correct!</h3>
+                    <p>Great job! You answered this question correctly.</p>
+                </div>
+            {% else %}
+                <div class="result-icon">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+                <div class="result-text">
+                    <h3>Incorrect</h3>
+                    <p>Don't worry! Let's review the correct answer.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        {% if not correct %}
+        <div class="review-section">
+            <h3><i class="fas fa-lightbulb"></i> Expected Answer</h3>
+            <p class="expected-answer">{{ expected }}</p>
+        </div>
+        {% endif %}
+
+        <div class="review-section">
+            <h3><i class="fas fa-book-open"></i> Explanation</h3>
+            <p class="explanation">{{ explanation }}</p>
+        </div>
+    </div>
+
+    <div class="performance-stats">
+        <div class="stat">
+            <div class="stat-value">{{ performance.total_questions }}</div>
+            <div class="stat-label">Total Questions</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">{{ performance.correct_answers }}</div>
+            <div class="stat-label">Correct Answers</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">{{ performance.current_streak }}</div>
+            <div class="stat-label">Current Streak</div>
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <a href="{{ url_for('new_question') }}" class="action-button next">
+            <i class="fas fa-arrow-right"></i> Next Question
+        </a>
+        <a href="{{ url_for('topics') }}" class="action-button change">
+            <i class="fas fa-exchange-alt"></i> Change Topic
+        </a>
+    </div>
+</div>
+
+<style>
+    .feedback-container {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .feedback-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+    .feedback-header h2 {
+        font-family: 'Fredoka One', cursive;
+        color: var(--primary-blue);
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .question-count {
+        background: #f0f7ff;
+        color: var(--primary-blue);
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-weight: bold;
+    }
+
+    .review-section {
+        margin-bottom: 25px;
+    }
+
+    .review-section h3 {
+        color: var(--primary-blue);
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: 'Fredoka One', cursive;
+    }
+
+    .review-section p {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 10px;
+        border-left: 4px solid var(--primary-blue);
+        line-height: 1.6;
+    }
+
+    .user-answer {
+        border-left-color: #FF6A88 !important;
+    }
+
+    .expected-answer {
+        border-left-color: #28a745 !important;
+    }
+
+    .explanation {
+        border-left-color: #ffc107 !important;
+    }
+
+    .result-indicator {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        border-radius: 15px;
+        margin: 25px 0;
+        gap: 20px;
+    }
+
+    .result-indicator.correct {
+        background: #E8F5E9;
+        border: 2px solid #2E7D32;
+    }
+
+    .result-indicator.incorrect {
+        background: #FFEBEE;
+        border: 2px solid #C62828;
+    }
+
+    .result-icon {
+        font-size: 2.5rem;
+    }
+
+    .result-indicator.correct .result-icon {
+        color: #2E7D32;
+    }
+
+    .result-indicator.incorrect .result-icon {
+        color: #C62828;
+    }
+
+    .result-text h3 {
+        margin: 0 0 5px 0;
+        font-family: 'Fredoka One', cursive;
+    }
+
+    .result-indicator.correct .result-text h3 {
+        color: #2E7D32;
+    }
+
+    .result-indicator.incorrect .result-text h3 {
+        color: #C62828;
+    }
+
+    .result-text p {
+        margin: 0;
+        opacity: 0.8;
+    }
+
+    .performance-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin: 30px 0;
+    }
+
+    .stat {
+        background: #f0f7ff;
+        padding: 15px;
+        border-radius: 15px;
+        text-align: center;
+    }
+
+    .stat-value {
+        font-family: 'Fredoka One', cursive;
+        font-size: 1.8rem;
+        color: var(--primary-blue);
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    }
+
+    .action-button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 25px;
+        border-radius: 50px;
+        font-weight: bold;
+        text-decoration: none;
+        transition: var(--transition);
+    }
+
+    .action-button.next {
+        background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+        color: white;
+    }
+
+    .action-button.change {
+        background: #6c757d;
+        color: white;
+    }
+
+    .action-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
+        .feedback-header {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+        }
+
+        .performance-stats {
+            grid-template-columns: 1fr;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
+    }
+</style>
+{% endblock %}

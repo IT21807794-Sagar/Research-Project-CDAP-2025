@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <div class="content-header">
+            <h1>Personalized Revision
+</h1>
+             <div class="user-profile">
+                <div class="user-avatar">EL</div>
+                <span>E Learn  </span>
+            </div>
+        </div>
+		
+<div class="dashboard-cards">
+     
+    <div class="card">
+        <i class="fas fa-chart-bar"></i>
+        <h3>Personalized Revision</h3>
+        <p>Here How it works ...</p>
+    </div>
+    
+</div>
+
+<div class="welcome-screen">
+    <div class="welcome-content bounce-in">
+        <h1>📄 Upload Your <span class="highlight">PDF</span></h1>
+        <p>We'll extract topics and build your Personalized Revision Plan</p>
+ 
+        <br/>
+        
+        <form method="post" enctype="multipart/form-data" class="upload-form fade-in">
+            <label for="pdf" class="upload-label">
+                <i class="fas fa-cloud-upload-alt"></i> Choose PDF File
+            </label>
+            <input type="file" id="pdf" name="pdf" accept=".pdf" required class="upload-input">
+            <span class="upload-filename" id="file-name">No file selected</span>
+            <button type="submit" class="cta-button">
+                <i class="fas fa-rocket"></i> Upload & Generate Topics
+            </button>
+        </form>
+
+        {% if error %}
+        <div class="error-message">
+            <i class="fas fa-exclamation-triangle"></i> {{ error }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .dashboard-cards {
+        display: grid;
+         
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        border-left: 4px solid var(--dark-blue);
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card h3 {
+        color: var(--primary-blue);
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+    }
+
+    .card p {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .card i {
+        font-size: 1.5rem;
+        color: var(--dark-blue);
+        margin-bottom: 15px;
+    }
+
+    .welcome-screen {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+    }
+
+    .welcome-content {
+        text-align: center;
+        max-width: 800px;
+        padding: 30px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .welcome-content h1 {
+        font-family: 'Fredoka One', cursive;
+        color: var(--primary-blue);
+        margin-bottom: 15px;
+        font-size: 2.5rem;
+    }
+
+    .highlight {
+        background: linear-gradient(90deg, var(--primary-blue), var(--dark-blue));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .upload-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .upload-input {
+        display: none;
+    }
+
+    .upload-label {
+        display: inline-block;
+        background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+        color: white;
+        padding: 15px 40px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 1.1rem;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(30, 60, 114, 0.4);
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .upload-label:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(30, 60, 114, 0.6);
+    }
+
+    .upload-filename {
+        font-size: 0.9rem;
+        color: #4A4A4A;
+        font-style: italic;
+        margin-top: 5px;
+    }
+
+    .cta-button {
+        background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: var(--transition);
+        margin-top: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .cta-button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(30, 60, 114, 0.6);
+    }
+
+    .error-message {
+        background: #ffebee;
+        color: #c62828;
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+</style>
+
+
+<script>
+    const fileInput = document.getElementById('pdf');
+    const fileName = document.getElementById('file-name');
+
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length > 0) {
+            fileName.textContent = fileInput.files[0].name;
+        } else {
+            fileName.textContent = "No file selected";
+        }
+    });
+</script>
+{% endblock %}

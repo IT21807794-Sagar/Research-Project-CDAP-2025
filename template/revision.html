@@ -1,0 +1,341 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="revision-container fade-in">
+    <!-- Action Buttons Header -->
+    <div class="action-header">
+        <button id="view-history" class="action-button">
+            <i class="fas fa-history"></i> View Question History
+        </button>
+        <button id="view-graph" class="action-button">
+            <i class="fas fa-chart-line"></i> View Progress Graph
+        </button>
+        <button id="download-pdf" class="download-button">
+            <i class="fas fa-file-pdf"></i> Download PDF Report
+        </button>
+    </div>
+
+    <!-- Main content container for PDF -->
+    <div id="content-to-print">
+        <div class="score-card">
+            <h2 class="text-center">Progress Report</h2>
+            <div class="score-circle" style="--score-percent: {{ score }}%">
+                <div>
+                    <span class="score-value">{{ "%.0f"|format(score) }}%</span>
+                    <p>Overall Score</p>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <p>{{ total_questions }}</p>
+                    <p>Questions</p>
+                </div>
+                <div class="stat-item">
+                    <p>{{ correct_answers }}</p>
+                    <p>Correct</p>
+                </div>
+                <div class="stat-item">
+                    <p>{{ total_questions - correct_answers }}</p>
+                    <p>Incorrect</p>
+                </div>
+                <div class="stat-item">
+                    <p>{{ (correct_answers / total_questions * 100)|round|int if total_questions > 0 else 0 }}%</p>
+                    <p>Accuracy</p>
+                </div>
+            </div>
+        </div>
+
+        {% if incorrect_topics and incorrect_topics|length > 0 %}
+        <div class="weak-areas-card">
+            <h2>
+                <i class="fas fa-exclamation-triangle"></i>
+                Areas to Improve
+            </h2>
+            <p>Based on your incorrect answers, you should focus on these topics:</p>
+            <ul class="weak-topics-list">
+                {% for topic, count in incorrect_topics.items() %}
+                <li class="weak-topic">
+                    <div class="topic-header">
+                        <i class="fas fa-bookmark"></i>
+                        <div>
+                            <span class="topic-name">{{ topic }}</span>
+                            <span class="topic-count">({{ count }} incorrect answer{% if count > 1 %}s{% endif %})</span>
+                        </div>
+                    </div>
+                    <div class="topic-resources">
+                        <p>Recommended study resources:</p>
+                        <a href="https://www.youtube.com/results?search_query={{ topic|replace(' ', '+') }}+study+guide"
+                           target="_blank"
+                           class="resource-link">
+                            <i class="fab fa-youtube"></i> YouTube tutorials for {{ topic }}
+                        </a>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <div class="revision-tips-card">
+            <h2>
+                <i class="fas fa-lightbulb"></i>
+                Revision Tips
+            </h2>
+            <div class="revision-content">
+                {% if revision_tips %}
+                    {{ revision_tips|replace('\n', '<br>')|safe }}
+                {% else %}
+                    <p>Great job on your answers! Keep up the good work by reviewing all topics regularly.</p>
+                    <br>
+                    <p>To maintain your knowledge:</p>
+                    <ul>
+                        <li>Review materials periodically</li>
+                        <li>Practice with different question types</li>
+                        <li>Teach the concepts to someone else</li>
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="action-buttons-center">
+        <a href="{{ url_for('question') }}" class="continue-button">
+            Continue Practicing
+        </a>
+        <a href="{{ url_for('topics') }}" class="change-topic-button">
+            Choose New Topic
+        </a>
+    </div>
+</div>
+
+<div id="historyModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Question History</h2>
+            <span class="close">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div id="historyContent" class="history-content">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="graphModal" class="modal">
+    <div class="modal-content large-modal">
+        <div class="modal-header">
+            <h2>Performance Progress</h2>
+            <span class="close">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div id="graphContent">
+                <img id="performanceGraph" src="" alt="Performance Graph" style="width: 100%;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+    // Modal functionality
+    const historyModal = document.getElementById('historyModal');
+    const graphModal = document.getElementById('graphModal');
+    const closeButtons = document.querySelectorAll('.close');
+
+    document.getElementById('view-history').addEventListener('click', function() {
+        loadQuestionHistory();
+        historyModal.style.display = 'block';
+    });
+
+    document.getElementById('view-graph').addEventListener('click', function() {
+        loadPerformanceGraph();
+        graphModal.style.display = 'block';
+    });
+
+    closeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            historyModal.style.display = 'none';
+            graphModal.style.display = 'none';
+        });
+    });
+
+    window.addEventListener('click', function(event) {
+        if (event.target === historyModal) {
+            historyModal.style.display = 'none';
+        }
+        if (event.target === graphModal) {
+            graphModal.style.display = 'none';
+        }
+    });
+
+    async function loadQuestionHistory() {
+        try {
+            const response = await fetch('/question_history');
+            const history = await response.json();
+
+            const historyContent = document.getElementById('historyContent');
+
+            if (history.length === 0) {
+                historyContent.innerHTML = '<p>No question history available yet.</p>';
+                return;
+            }
+
+            historyContent.innerHTML = history.reverse().map((item, index) => `
+                <div class="history-item ${item.is_correct ? 'correct' : 'incorrect'}">
+                    <div class="history-question">${item.question}</div>
+                    <div class="history-answer">
+                        <strong>Your answer:</strong> ${item.user_answer || 'No answer provided'}
+                    </div>
+                    <div class="history-answer">
+                        <strong>Correct answer:</strong> ${item.correct_answer}
+                    </div>
+                    <div class="history-answer">
+                        <strong>Explanation:</strong> ${item.explanation}
+                    </div>
+                    <div class="history-meta">
+                        <span class="history-topic">${item.topic}</span>
+                        <span>${new Date(item.timestamp).toLocaleDateString()}</span>
+                        <span>${item.is_correct ? '✅ Correct' : '❌ Incorrect'}</span>
+                    </div>
+                </div>
+            `).join('');
+        } catch (error) {
+            console.error('Error loading history:', error);
+            document.getElementById('historyContent').innerHTML = '<p>Error loading question history.</p>';
+        }
+    }
+
+    async function loadPerformanceGraph() {
+        try {
+            const response = await fetch('/performance_data');
+            const data = await response.json();
+
+            if (data.graph) {
+                document.getElementById('performanceGraph').src = data.graph;
+            } else {
+                document.getElementById('graphContent').innerHTML =
+                    '<p>Not enough data to generate performance graph. Complete more questions to see your progress.</p>';
+            }
+        } catch (error) {
+            console.error('Error loading graph:', error);
+            document.getElementById('graphContent').innerHTML = '<p>Error loading performance data.</p>';
+        }
+    }
+
+    document.getElementById('download-pdf').addEventListener('click', function() {
+        // Store original styles
+        const originalStyles = {
+            actionButtons: document.querySelector('.action-buttons-center').style.display,
+            actionHeader: document.querySelector('.action-header').style.display
+        };
+
+        // Hide elements that shouldn't be in PDF
+        document.querySelector('.action-buttons-center').style.display = 'none';
+        document.querySelector('.action-header').style.display = 'none';
+
+        // Add PDF-specific styling
+        document.body.classList.add('pdf-mode');
+
+        // Get the element to print
+        const element = document.getElementById('content-to-print');
+
+        // Configure PDF options
+        const options = {
+            margin: [10, 10, 10, 10],
+            filename: 'progress_report.pdf',
+            html2canvas: {
+                scale: 2,
+                useCORS: true,
+                logging: false
+            },
+            jsPDF: {
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4',
+                compress: true
+            },
+            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+        };
+
+        // Generate and download PDF
+        html2pdf()
+            .set(options)
+            .from(element)
+            .save()
+            .then(() => {
+                // Restore original styles
+                document.body.classList.remove('pdf-mode');
+                document.querySelector('.action-buttons-center').style.display = originalStyles.actionButtons;
+                document.querySelector('.action-header').style.display = originalStyles.actionHeader;
+            })
+            .catch(error => {
+                console.error('PDF generation error:', error);
+                // Restore original styles even if there's an error
+                document.body.classList.remove('pdf-mode');
+                document.querySelector('.action-buttons-center').style.display = originalStyles.actionButtons;
+                document.querySelector('.action-header').style.display = originalStyles.actionHeader;
+            });
+    });
+</script>
+
+<style>
+    /* PDF-specific styles */
+    .pdf-mode .revision-container {
+        margin: 0;
+        padding: 0;
+    }
+
+    .pdf-mode .score-card,
+    .pdf-mode .weak-areas-card,
+    .pdf-mode .revision-tips-card {
+        margin-bottom: 20px;
+        page-break-inside: avoid;
+    }
+
+    .pdf-mode .weak-topics-list {
+        margin-left: 0;
+        padding-left: 20px;
+    }
+
+    .pdf-mode .topic-resources a {
+        color: #0066cc;
+        text-decoration: none;
+    }
+
+    .pdf-mode .score-circle {
+        margin: 0 auto;
+    }
+
+    .pdf-mode .stats-grid {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 20px;
+    }
+
+    /* Ensure proper page breaks in PDF */
+    @media print {
+        .action-header,
+        .action-buttons-center {
+            display: none !important;
+        }
+
+        .score-card,
+        .weak-areas-card,
+        .revision-tips-card {
+            page-break-inside: avoid;
+        }
+
+        body {
+            font-size: 12pt;
+            line-height: 1.4;
+        }
+
+        h2 {
+            font-size: 16pt;
+            margin-bottom: 10pt;
+        }
+    }
+</style>
+{% endblock %}

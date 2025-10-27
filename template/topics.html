@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="subject-selection fade-in">
+    <h1 class="subject-title">Select a Topic</h1>
+    <p class="subject-subtitle">Choose your topic and difficulty level.</p>
+
+    <form method="post" class="topic-form">
+        <div class="subject-grid">
+            {% for num, topic in topics.items() %}
+            <div class="subject-card">
+                <input type="radio" name="topic" value="{{ topic }}" id="topic{{ num }}" class="subject-input" required>
+                <label for="topic{{ num }}" class="subject-label">
+                    <i class="fas fa-book subject-icon"></i>
+                    <h3>{{ topic }}</h3>
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+
+        
+
+        <button type="submit" class="start-button">Start Quiz</button>
+    </form>
+</div>
+
+ 
+{% endblock %}
